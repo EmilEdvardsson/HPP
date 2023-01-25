@@ -11,7 +11,7 @@ int main() {
     printf("Enter a number: ");
     scanf("%lf", &num);
 
-    if (sqrt(num) == (int)sqrt(num) && (int)sqrt(num)%1 == 0){
+    if (sqrt(num) == (int)sqrt(num)){
         printf("The number has a perfect square which is: %.5lf", sqrt(num));
     } else {
         printf("The number does not have a perfect square which is: %.5lf", sqrt(num));
