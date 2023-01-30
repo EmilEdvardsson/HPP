@@ -1,0 +1,48 @@
+Regularcode:
+     1.0000499600361
+Regularcode-O2:
+     1.0000499600361
+Regularcode-O3:
+     1.0000499600361
+Mallocycode:
+     1.0000059952043
+Mallocycode-O2:
+     1.0000059952043
+Mallocycode-O3:
+     1.0000059952043
+Sleepycode:
+Calling sleep(), m = 0
+Calling sleep(), m = 1
+Calling sleep(), m = 2
+Calling sleep(), m = 3
+Calling sleep(), m = 4
+     1.0000499600361
+Sleepycode-O2:
+Calling sleep(), m = 0
+Calling sleep(), m = 1
+Calling sleep(), m = 2
+Calling sleep(), m = 3
+Calling sleep(), m = 4
+     1.0000499600361
+Sleepycode-O3:
+Calling sleep(), m = 0
+Calling sleep(), m = 1
+Calling sleep(), m = 2
+Calling sleep(), m = 3
+Calling sleep(), m = 4
+     1.0000499600361
+Threadedcode:
+main thread result :      1.0000499600361
+other thread result:      1.0000499600361
+Threadedcode-O2:
+main thread result :      1.0000499600361
+other thread result:      1.0000499600361
+Threadedcode-O3:
+main thread result :      1.0000499600361
+other thread result:      1.0000499600361
+Calling sleep(), m = 0
+Calling sleep(), m = 1
+Calling sleep(), m = 2
+Calling sleep(), m = 3
+Calling sleep(), m = 4
+     1.0000499600361
