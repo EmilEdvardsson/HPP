@@ -2,7 +2,7 @@
 #include <math.h>
 #include <pthread.h>
 
-int count = 0;
+int m, count = 0;
 
 int is_prime(int n) {
    int i;
@@ -30,17 +30,13 @@ void *thread_primes(void *args) {
 }
 
 int main() {
-   int m, i;
+   long i;
    pthread_t threads[2];
    printf("Enter the upper limit: ");
    scanf("%d", &m);
-   int arg_threads[2];
-   arg_threads[0] = m;
 
    for (i = 0; i<2; i++){
-      arg_threads[1] = i;
-      printf("arg = %d\n", i);
-      pthread_create(&threads[i], NULL, thread_primes, arg_threads);
+      pthread_create(&threads[i], NULL, thread_primes, (int *)i);
    }
 
    for (i = 0; i<2; i++){
