@@ -34,9 +34,13 @@ int main() {
    pthread_t threads[2];
    printf("Enter the upper limit: ");
    scanf("%d", &m);
+   int thread_args[2][2];
+
 
    for (i = 0; i<2; i++){
-      pthread_create(&threads[i], NULL, thread_primes, (int *)i);
+      thread_args[i][0] = m;
+      thread_args[i][1] = i;
+      pthread_create(&threads[i], NULL, thread_primes, (void *)thread_args[i]);
    }
 
    for (i = 0; i<2; i++){
