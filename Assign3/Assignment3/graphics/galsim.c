@@ -149,7 +149,7 @@ int main(int argc, char *argv[]) {
 	FILE *new_file = fopen("output.gal", "wb");
 	for (i = 0; i < N; i++){
 		//int arr[] = {1, 2, 3, 4, 5};
-		printf("Writing to file...");
+		//printf("Writing to file...");
     		fwrite(&stars[i], sizeof(CBody), 1, new_file);
 	}
     	fclose(new_file);

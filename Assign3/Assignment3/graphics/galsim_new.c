@@ -26,10 +26,13 @@ void update_stars(cbody_t *stars, double G, int N, double dt){
 	//int check_counter = 0;
 	cbody_t *star_ptr_i = stars;
 	cbody_t *star_ptr_j = stars + 1;
+	/*Loop unrolling */
+	//cbody_t *star_ptr_i2 = stars + 1;
+	//cbody_t *star_ptr_j2 = stars + 2;
 	for (int i = 0; i < N; i++) {
 		//const double Gdt = G*dt;
-		//double ix, iy, im, 
-		double fx_sum = 0, fy_sum = 0; 
+		//double ix, iy, im,
+		double fx_sum = 0, fy_sum = 0;
 		double ix = (star_ptr_i)->xp;
 		double iy = (star_ptr_i)->yp;
 		double im = (star_ptr_i)->mass;
