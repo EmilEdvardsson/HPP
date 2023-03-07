@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "graphics.h"
 #include <math.h>
+#include <omp.h>
 
 /* Define struct for a celestial body */
 typedef struct {
@@ -18,37 +19,53 @@ const int windowWidth=800;
 const double eps = 0.001;
 //int check_counter = 0;
 
+/*double sum_array(double *arr, int n) {
+        double sum = 0;
+        #pragma omp parallel for reduction(+:sum)
+        for (int i = 0; i < n; i++) {
+                sum += arr[i];
+        }
+        return sum;
+}*/
+
 /* Calculates and updates for new velocity and position of single star */
 void update_stars(cbody_t *stars, const double G, const int N, const double dt){
-	double *xp = stars->xp;
-	double *yp = stars->yp;
-	double *mass = stars->mass;
-	double *xv = stars->xv;
-	double *yv = stars->yv;
-	const double Gdt = G*dt;
-	for (int i = 0; i < N; i++) {
-		double im = mass[i];
-		double ix = xp[i];
-		double iy = yp[i];
-		double axi = 0;
-		double ayi = 0;
-		for (int j = i+1;j < N; j++) {
-			double mj = mass[j];
-			double rx = ix - xp[j];
-			double ry = iy - yp[j];
-			double rsqrt = sqrt(rx*rx + ry*ry) + eps;
-			double inv_r = 1.0/(rsqrt*rsqrt*rsqrt);
-			double inv_r_mj = inv_r*mj;
-			axi += rx*inv_r_mj;
-			ayi += ry*inv_r_mj;
-			xv[j] += Gdt*im*inv_r*rx;
-			yv[j] += Gdt*im*inv_r*ry;
-		}
-		xv[i] += -Gdt*axi;
-		yv[i] += -Gdt*ayi;
-		xp[i] += xv[i]*dt;
-		yp[i] += yv[i]*dt;
-	}
+        double *xp = stars->xp;
+        double *yp = stars->yp;
+        double *mass = stars->mass;
+        double *xv = stars->xv;
+        double *yv = stars->yv;
+        const double Gdt = G*dt;
+
+	//#pragma omp parallel for firstprivate(xp, yp, mass, xv, yv, Gdt)
+        for (int i = 0; i < N; i++) {
+                double im = mass[i];
+                double ix = xp[i];
+                double iy = yp[i];
+                double axi = 0;
+                double ayi = 0;
+		//printf("Starting thread\n");
+		#pragma omp parallel for firstprivate(im, ix, iy, axi, ayi)
+                for (int j = i+1;j < N; j++) {
+			//printf("%d\n", j);
+                        double mj = mass[j];
+                        double rx = ix - xp[j];
+                        double ry = iy - yp[j];
+                        double rsqrt = sqrt(rx*rx + ry*ry) + eps;
+                        double inv_r = 1.0/(rsqrt*rsqrt*rsqrt);
+                        double inv_r_mj = inv_r*mj;
+                        axi += rx*inv_r_mj;
+                        ayi += ry*inv_r_mj;
+                        xv[j] += Gdt*im*inv_r*rx;
+                        yv[j] += Gdt*im*inv_r*ry;
+                }
+		//#pragma omp barrier
+		//printf("Ending thread\n");
+                xv[i] += -Gdt*axi;
+                yv[i] += -Gdt*ayi;
+                xp[i] += xv[i]*dt;
+                yp[i] += yv[i]*dt;
+        }
 }
 
 int main(int argc, char const *argv[]) {
@@ -127,8 +144,10 @@ int main(int argc, char const *argv[]) {
 		FlushDisplay();
 		CloseDisplay();
 	} else {
-		//printf("Graphics turned off\n");
-		while (count < nsteps) {
+		printf("Graphics turned off\n");
+		printf("%d",count);
+		while (count < nsteps){
+			printf("%d",count);
 			update_stars(&stars, G, N, dt);
 			count++;
 		}

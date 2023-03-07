@@ -20,8 +20,8 @@ galsim_newO3: galsim_new.o graphics.o
 galsim_new.o: galsim_new.c graphics.h
 	gcc $(CFLAGS) $(INCLUDES) -c galsim_new.c
 
-galsim_O3: galsim.o graphics.o
-	gcc -o galsim_O3 galsim.o graphics.o -O3 $(LDFLAGS)
+galsimO3: galsim.o graphics.o
+	gcc -o galsimO3 galsim.o graphics.o -O3 $(LDFLAGS)
 
 galsim_test: galsim.o graphics.o
 	gcc -o galsim_test galsim.o graphics.o -O3 $(LDFLAGS)

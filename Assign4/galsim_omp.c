@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "graphics.h"
 #include <math.h>
+#include <omp.h>
 
 /* Define struct for a celestial body */
 typedef struct {
@@ -104,35 +104,11 @@ int main(int argc, char const *argv[]) {
 		printf("mass = %.15lf\n", stars.mass[i]);
 	}*/
 
-	if (graphics == 1){
-		//printf("Graphics on\n");
-		float L=1, W=1;
-
-		InitializeGraphics(argv[0],windowWidth,windowWidth);
-		SetCAxes(0,1);
-
-		while(count < nsteps) {
-			/* Update star position and velocity */
-			update_stars(&stars, G, N, dt);
-			/* Call graphics routines. */
-			ClearScreen();
-			for (int k = 0; k < N; k++) {
-				DrawCircle(stars.xp[k], stars.yp[k], L, W, circleRadius, circleColor);
-			}
-			Refresh();
-			/* Sleep a short while to avoid screen flickering. */
-			usleep(3000);
-			count++;
-		}
-		FlushDisplay();
-		CloseDisplay();
-	} else {
-		//printf("Graphics turned off\n");
-		while (count < nsteps) {
-			update_stars(&stars, G, N, dt);
-			count++;
-		}
+	while (count < nsteps) {
+		update_stars(&stars, G, N, dt);
+		count++;
 	}
+
 	/* Write result to new file */
 	FILE *new_file = fopen("result.gal", "wb");
 	for (int i = 0; i < N; i++){
